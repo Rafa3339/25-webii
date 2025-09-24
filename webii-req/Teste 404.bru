@@ -1,0 +1,15 @@
+meta {
+  name: Teste 404
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{url_local}}/inexistente
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
