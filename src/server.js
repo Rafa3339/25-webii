@@ -1,5 +1,6 @@
-// src/server.js - ES Modules
+// src/server.js
 import express from 'express';
+import prisma from './config/database.js'; // <-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -8,40 +9,66 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Rota de health check
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'API do Gerador de Provas funcionando!',
+app.get('/health', async (req, res) => {
+  let databaseStatus = 'OK';
+  let databaseMessage = 'Conexão com banco de dados funcionando';
+
+  try {
+    // Tenta fazer uma query simples no banco
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (error) {
+    databaseStatus = 'ERROR';
+    databaseMessage = 'Falha na conexão com banco de dados';
+    console.error('Erro na verificação do banco:', error);
+  }
+
+  // Define o status HTTP baseado na saúde do banco
+  const httpStatus = databaseStatus === 'OK' ? 200 : 503;
+
+  res.status(httpStatus).json({
+    status: databaseStatus === 'OK' ? 'OK' : 'DEGRADED',
+    message: 'API do Gerador de Provas',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
+    services: {
+      api: 'OK',
+      database: {
+        status: databaseStatus,
+        message: databaseMessage,
+      },
+    },
   });
 });
 
 // Rota básica para usuários (professores)
-app.get('/users', (req, res) => {
-  // Mock data - simula dados que viriam do banco
-  const usuarios = [
-    {
-      id: 1,
-      nome: 'Prof. Maria Silva',
-      email: 'maria@escola.com',
-      papel: 'PROFESSOR',
-      dataCreacao: '2024-01-15T10:00:00Z',
-    },
-    {
-      id: 2,
-      nome: 'Admin João',
-      email: 'joao@escola.com',
-      papel: 'ADMIN',
-      dataCreacao: '2024-01-10T08:30:00Z',
-    },
-  ];
+app.get('/users', async (req, res) => {
 
-  res.status(200).json({
-    success: true,
-    data: usuarios,
-    total: usuarios.length,
-  });
+  try {
+    // Busca todos os usuários no banco
+    const usuarios = await prisma.user.findMany({
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        papel: true,
+        foto: true,
+        createdAt: true,
+      },
+    }); // <-
+
+    res.status(200).json({
+      success: true,
+      data: usuarios,
+      total: usuarios.length,
+    });
+  } catch (error) {
+    console.error('Erro ao buscar usuários:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar usuários',
+      error: error.message,
+    });
+  }
 });
 
 // Middleware de tratamento de rotas não encontradas
