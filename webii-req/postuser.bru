@@ -1,0 +1,20 @@
+meta {
+  name: postuser
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url_local}}/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "nome": "Prof. Carlos Santos",
+      "email": "carlos@escola.com",
+      "senha": "senha123",
+      "papel": "PROFESSOR"
+    }
+}
