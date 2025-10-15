@@ -1,18 +1,17 @@
 meta {
-  name: postuser
+  name: updateuser
   type: http
   seq: 1
 }
 
-post {
-  url: {{url_local}}/users
+put {
+  url: {{url_local}}/users/1
   body: json
   auth: none
 }
 
 body:json {
   {
-      "nome": "Arthur",
       "senha": "senha123",
       "papel": "PROFESSOR"
     }

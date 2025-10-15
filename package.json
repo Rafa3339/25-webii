@@ -11,7 +11,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -39,12 +41,15 @@
     "@eslint/js": "^9.36.0",
     "@eslint/json": "^0.13.2",
     "@eslint/markdown": "^7.3.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
-    "prisma": "^6.16.3"
+    "prisma": "^6.16.3",
+    "supertest": "^7.1.4",
+    "vitest": "^3.2.4"
   }
 }
