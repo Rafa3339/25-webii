@@ -75,6 +75,7 @@ npm test
 
 ## 📁 Estrutura do Projeto
 
+```text
 25-webii/
 ├── prisma/
 │ ├── migrations/ # Migrations do banco de dados
@@ -95,6 +96,7 @@ npm test
 ├── .gitignore
 ├── package.json
 └── README.md
+```
 
 ## 📊 Modelos de Dados
 
