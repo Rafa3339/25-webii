@@ -13,7 +13,10 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:subjects": "vitest run tests/subjects.test.js",
+    "test:questions": "vitest run tests/questions.test.js",
+    "test:users": "vitest run tests/users.test.js"
   },
   "repository": {
     "type": "git",

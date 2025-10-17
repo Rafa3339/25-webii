@@ -24,5 +24,39 @@ model User {
   createdAt DateTime @default(now()) @map("data_criacao")
   updatedAt DateTime @updatedAt @map("data_atualizacao")
 
+  questions Question[] // Questões criadas pelo professor
+
   @@map("users") // nome da tabela no banco
+}
+
+model Question {
+  id              Int      @id @default(autoincrement())
+  enunciado       String
+  dificuldade     Int
+  respostaCorreta String?  @map("resposta_correta")
+  disciplinaId    Int      @map("disciplina_id")
+  autorId         Int      @map("autor_id")
+  ativa           Boolean  @default(true)
+  createdAt       DateTime @default(now()) @map("data_criacao")
+  updatedAt       DateTime @updatedAt @map("data_atualizacao")
+
+  // Relacionamentos
+  disciplina Subject @relation(fields: [disciplinaId], references: [id])
+  autor      User    @relation(fields: [autorId], references: [id])
+
+  @@map("questions")
+}
+
+model Subject {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  ativa       Boolean  @default(true)
+  professorId Int      @map("professor_id")
+  createdAt   DateTime @default(now()) @map("data_criacao")
+  updatedAt   DateTime @updatedAt @map("data_atualizacao")
+
+  // Relacionamento com Questions (adicionar depois)
+  questions Question[]
+
+  @@map("subjects")
 }

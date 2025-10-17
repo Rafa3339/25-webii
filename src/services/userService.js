@@ -182,7 +182,7 @@ export const updateUser = async (userId, userData) => {
  * @returns {Promise<Object>} Dados do usuário removido
  * @throws {Error} Se usuário não existir
  */
-export const deleteUser = async userId => {
+export const deleteUser = async (userId) => {
   // 1. Validar ID
   if (!userId || isNaN(userId) || userId <= 0) {
     throw new Error('ID inválido. Deve ser um número positivo');
